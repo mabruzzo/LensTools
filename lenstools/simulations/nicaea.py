@@ -223,7 +223,7 @@ class Nicaea(w0waCDM):
 
 	def __init__(self,H0=72.0,Om0=0.26,Ode0=0.74,Ob0=0.046,w0=-1.0,wa=0.0,sigma8=0.800,As=None,ns=0.960,m_nu=np.array([0.,0.,0.])*u.eV,name=None):
 
-		super(Nicaea,self).__init__(H0,Om0,Ode0,w0=w0,wa=wa,Ob0=Ob0,m_nu=m_nu,name=name)
+		super(Nicaea,self).__init__(H0,Om0,Ode0,w0=w0,wa=wa,Tcmb0=2.725,Ob0=Ob0,m_nu=m_nu,name=name)
 		self.sigma8 = sigma8
 		self.As = As
 		self.ns = ns
