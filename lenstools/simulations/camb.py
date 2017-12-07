@@ -290,7 +290,11 @@ class CAMBSettings(LTSettings):
 		s.write("omch2 = {0:.6f}\n".format((cosmology.Om0 - cosmology.Ob0)*(cosmology.h**2)))
 
 		#Neutrino density
-		if cosmology._nmassivenu==0:
+                if hasattr(cosmology,'_nmassivenu'):
+                        _nmassivenu = cosmology._nmassivenu
+                else:
+                        _nmassivenu = 0.0
+		if _nmassivenu==0:
 			omnuh2 = 0.0
 		else:
 			omnuh2 = cosmology.Onu0 * (cosmology.h**2)
@@ -324,13 +328,13 @@ class CAMBSettings(LTSettings):
 		s.write("\n\n#####################################\n\n")
 			
 		s.write('helium_fraction = {0}\n'.format(self.helium_fraction))
-		s.write('massless_neutrinos = {0}\n'.format(cosmology.Neff-cosmology._nmassivenu))
-		s.write('massive_neutrinos = {0}\n'.format(cosmology._nmassivenu))
+		s.write('massless_neutrinos = {0}\n'.format(cosmology.Neff-_nmassivenu))
+		s.write('massive_neutrinos = {0}\n'.format(_nmassivenu))
 		s.write('nu_mass_eigenstates = {0}\n'.format(self.nu_mass_eigenstates))
 		s.write('nu_mass_degeneracies = {0}\n'.format(self.nu_mass_degeneracies))
 		
 		#Compute the mass fractions of the massive species
-		if cosmology._nmassivenu:
+		if _nmassivenu:
 			fractions = (cosmology.m_nu / cosmology.m_nu.sum()).decompose().value
 		else:
 			fractions = 1
