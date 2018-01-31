@@ -670,12 +670,12 @@ class CatalogSettings(LTSettings):
 		settings.format = options.get(section,"format")
 
 		try:
-			self.plane_format = options.get(section,"plane_format")
+			settings.plane_format = options.get(section,"plane_format")
 		except NoOptionError:
 			pass
 
 		try:
-			self.plane_name_format = options.get(section,"plane_name_format")
+			settings.plane_name_format = options.get(section,"plane_name_format")
 		except NoOptionError:
 			pass
 
