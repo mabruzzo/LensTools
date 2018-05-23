@@ -74,15 +74,32 @@ def _nd_level_value(likelihood,level,low,high,precision=0.01):
 
 	middle = (low+high)/2
 	current_integral = likelihood[likelihood>middle].sum()
+        last_integral = np.nan
+        duplicate_num = 0
 
-	if np.abs((current_integral-level)/level)<precision:
-		return middle
-	
-	#Proceed with bisection method
-	if current_integral>level:
-		return _nd_level_value(likelihood,level,middle,high,precision=precision)
-	else:
-		return _nd_level_value(likelihood,level,low,middle,precision=precision)
+	while np.abs((current_integral-level)/level)>=precision:
+                if last_integral != current_integral:
+                        last_integral = current_integral
+                        duplicate_num = 0
+                else:
+                        if duplicate_num==10:
+                                cur_p = np.abs((current_integral - level)
+                                               / level)
+                                raise RuntimeError("Could not identify a "
+                                                   "likelihood that could "
+                                                   "reproduce the confidence "
+                                                   "level with the desired "
+                                                   "precision. The best "
+                                                   "precision achieved is "
+                                                   "{:e}.".format(cur_p))
+                        duplicate_num+=1
+                if current_integral > level:
+                        low = middle
+                else:
+                        high = middle
+                middle = (low+high)/2
+	        current_integral = likelihood[likelihood>middle].sum()
+        return middle
 
 #############################################################
 ##################ContourPlot class##########################
